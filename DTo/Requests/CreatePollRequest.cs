@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace POLLS.Http.Requests;
+namespace POLLS.DTo.Requests;
 
 public class CreatePollRequest
 {
