@@ -10,5 +10,6 @@ namespace POLLS.Interfaces
         void AddVote(Vote vote);
         Task<int> SaveChangesAsync();
         Task<double> IncrementVoteCountAsync(string pollId, string pollOptionId);
+        Task<double> DecrementVoteCountAsync(string pollId, string pollOptionId);
     }
 }

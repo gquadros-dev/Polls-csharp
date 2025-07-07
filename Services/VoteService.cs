@@ -33,6 +33,18 @@ namespace POLLS.Services
                     {
                         return new ConflictObjectResult(new { message = "You have already voted on this poll." });
                     }
+
+                    var decrementVoteCount = await _voteRepository.DecrementVoteCountAsync(
+                        pollId.ToString(),
+                        userPreviousVote.PollOptionId.ToString()
+                    );
+
+                    await _notificationService.PublishVoteNotificationAsync(
+                        pollId,
+                        userPreviousVote.PollOptionId,
+                        decrementVoteCount
+                    );
+
                     _voteRepository.RemoveVote(userPreviousVote);
                 }
             }
@@ -53,6 +65,7 @@ namespace POLLS.Services
             await _voteRepository.SaveChangesAsync();
 
             var voteCount = await _voteRepository.IncrementVoteCountAsync(pollId.ToString(), request.PollOptionId.ToString());
+
             await _notificationService.PublishVoteNotificationAsync(pollId, request.PollOptionId, voteCount);
 
             return new CreatedResult();

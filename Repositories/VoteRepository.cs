@@ -49,5 +49,11 @@ namespace POLLS.Repositories
             var redisDb = _redis.GetDatabase();
             return await redisDb.SortedSetIncrementAsync(pollId, pollOptionId, 1);
         }
+
+        public async Task<double> DecrementVoteCountAsync(string pollId, string pollOptionId)
+        {
+            var redisDb = _redis.GetDatabase();
+            return await redisDb.SortedSetIncrementAsync(pollId, pollOptionId, -1);
+        }
     }
 }

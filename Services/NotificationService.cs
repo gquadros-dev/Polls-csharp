@@ -20,7 +20,10 @@ namespace POLLS.Services
         {
             var subscriber = _redis.GetSubscriber();
             var notification = new VoteNotification { PollOptionId = pollOptionId, Votes = (int)voteCount };
-            await subscriber.PublishAsync(RedisChannel.Literal(pollId.ToString()), JsonSerializer.Serialize(notification));
+            var channel = RedisChannel.Literal(pollId.ToString());
+            var messagePayload = JsonSerializer.Serialize(notification);
+
+            await subscriber.PublishAsync(channel, messagePayload);
         }
 
         public async Task HandleWebSocketConnectionAsync(HttpContext context, Guid pollId)
