@@ -12,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IPollRepository, PollRepository>();
 builder.Services.AddScoped<IPollService, PollService>();
 
+builder.Services.AddScoped<IVoteRepository, VoteRepository>();
+builder.Services.AddScoped<IVoteService, VoteService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(
     ConnectionMultiplexer.Connect("localhost:6380")
 );
