@@ -1,17 +1,24 @@
 version: '3.7'
 
 services:
-  postgres:
-    image: bitnami/postgresql:latest
-    ports:
-      - '12120:5432'
-    environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=polls
-    volumes:
-      - polls_pg_data:/bitnami/postgresql
+  # postgres:
+  #   image: bitnami/postgresql:latest
+  #   ports:
+  #     - '12120:5432'
+  #   environment:
+  #     - POSTGRES_USER=docker
+  #     - POSTGRES_PASSWORD=docker
+  #     - POSTGRES_DB=polls
+  #   volumes:
+  #     - polls_pg_data:/bitnami/postgresql
 
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=yourStrong(!)Password
   redis:
     image: bitnami/redis:latest
     environment:
