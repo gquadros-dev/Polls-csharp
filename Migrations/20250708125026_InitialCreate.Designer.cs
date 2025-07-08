@@ -12,7 +12,7 @@ using POLLS.Data;
 namespace Polls.Migrations
 {
     [DbContext(typeof(PollsDbContext))]
-    [Migration("20250708124147_InitialCreate")]
+    [Migration("20250708125026_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -80,21 +80,23 @@ namespace Polls.Migrations
                     b.Property<Guid>("PollId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("PollId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("PollOptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SessionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PollId");
 
-                    b.HasIndex("PollOptionId");
+                    b.HasIndex("PollId1");
 
-                    b.HasIndex("SessionId", "PollId")
-                        .IsUnique();
+                    b.HasIndex("PollOptionId");
 
                     b.ToTable("Votes");
                 });
@@ -113,10 +115,14 @@ namespace Polls.Migrations
             modelBuilder.Entity("POLLS.Models.Vote", b =>
                 {
                     b.HasOne("POLLS.Models.Poll", "Poll")
-                        .WithMany("Votes")
+                        .WithMany()
                         .HasForeignKey("PollId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("POLLS.Models.Poll", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("PollId1");
 
                     b.HasOne("POLLS.Models.PollOption", "PollOption")
                         .WithMany("Votes")

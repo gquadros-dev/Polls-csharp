@@ -50,10 +50,11 @@ namespace Polls.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SessionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SessionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PollOptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PollId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,8 +69,12 @@ namespace Polls.Migrations
                         name: "FK_Votes_Polls_PollId",
                         column: x => x.PollId,
                         principalTable: "Polls",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Votes_Polls_PollId1",
+                        column: x => x.PollId1,
+                        principalTable: "Polls",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -83,15 +88,14 @@ namespace Polls.Migrations
                 column: "PollId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Votes_PollId1",
+                table: "Votes",
+                column: "PollId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Votes_PollOptionId",
                 table: "Votes",
                 column: "PollOptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_SessionId_PollId",
-                table: "Votes",
-                columns: new[] { "SessionId", "PollId" },
-                unique: true);
         }
 
         /// <inheritdoc />
